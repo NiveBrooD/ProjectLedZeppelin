@@ -1,14 +1,32 @@
 package com.javarush.ramis.repository;
 
+import com.javarush.ramis.entity.Role;
 import com.javarush.ramis.entity.User;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class UserRepository implements Repository<User> {
-    private final Map<Long, User> users = new HashMap<>();
+    private static volatile UserRepository INSTANCE = null;
+
+    private static final Map<Long, User> users = new ConcurrentHashMap<>();
     public static final AtomicLong ID_GENERATOR = new AtomicLong(0);
 
+    private UserRepository() {
+        users.put(ID_GENERATOR.getAndIncrement(), new User("admin", "admin", Role.ADMIN));
+    }
+
+    public static UserRepository getInstance() {
+        if (INSTANCE == null) {
+            synchronized (UserRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new UserRepository();
+                }
+            }
+        }
+        return INSTANCE;
+    }
 
     @Override
     public Collection<User> getAll() {
