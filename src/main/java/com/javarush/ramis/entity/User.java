@@ -1,13 +1,16 @@
 package com.javarush.ramis.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class User {
-    private long id;
+    private Long id;
     private String login;
     private String password;
     private Role role;

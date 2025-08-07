@@ -8,8 +8,21 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Quest {
-    private int id;
+    private Long id;
     private String title;
     private String description;
-    private String currentQuestion;
+    private Question firstQuestion;
+    private Question currentQuestion;
+
+
+    public Quest(String title, String description, Question firstQuestion) {
+        this.title = title;
+        this.description = description;
+        this.firstQuestion = firstQuestion;
+        restartQuest();
+    }
+
+    public void restartQuest() {
+        currentQuestion = firstQuestion;
+    }
 }

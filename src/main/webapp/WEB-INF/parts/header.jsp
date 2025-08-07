@@ -9,7 +9,7 @@
     <title>Quest</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/superhero/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/styles.min.css">
+    <link rel="stylesheet" href="../static/main.css">
 </head>
 
 <body>
@@ -29,7 +29,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href=".">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#statistics">Статистика</a></li>
-                    <li class="nav-item"><a class="nav-link" href="list-user">Пользователи</a>
+                    <li class="nav-item"><a class="nav-link" href="list-users">Пользователи</a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="create-quest">Создать квест</a>
                     </li>
