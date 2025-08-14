@@ -3,17 +3,18 @@ package com.javarush.ramis.entity;
 import com.javarush.ramis.repository.AnswerRepository;
 import com.javarush.ramis.service.AnswerService;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collections;
+
 import java.util.List;
-import java.util.Map;
+
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class Question {
+    private Long id;
     private String description;
     private List<Answer> answers;
     private boolean end;
