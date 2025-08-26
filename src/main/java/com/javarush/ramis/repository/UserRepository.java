@@ -14,7 +14,9 @@ public class UserRepository implements Repository<User> {
     public static final AtomicLong ID_GENERATOR = new AtomicLong(0);
 
     private UserRepository() {
-        users.put(ID_GENERATOR.getAndIncrement(), new User("admin", "123", Role.ADMIN));
+        User user = new User("admin", "123", Role.ADMIN);
+        user.setId(ID_GENERATOR.incrementAndGet());
+        users.put(user.getId(), user);
     }
 
     public static UserRepository getInstance() {

@@ -1,6 +1,6 @@
 package com.javarush.ramis.entity;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.Setter;
 

@@ -13,6 +13,15 @@
 <head>
     <title>Создание ответов</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
         .question-block {
             border: 1px solid #ffffff;
             padding: 15px;

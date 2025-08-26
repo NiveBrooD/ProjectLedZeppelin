@@ -1,7 +1,5 @@
 package com.javarush.ramis.repository;
 
-import com.javarush.ramis.entity.User;
-
 import java.util.Collection;
 import java.util.Optional;
 

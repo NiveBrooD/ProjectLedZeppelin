@@ -22,7 +22,7 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User currentUser = (User) req.getSession().getAttribute("user");;
+        User currentUser = (User) req.getSession().getAttribute("user");
         if (currentUser == null) {
             resp.sendRedirect("/login");
             return;

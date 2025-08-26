@@ -1,7 +1,6 @@
 package com.javarush.ramis.service;
 
 import com.javarush.ramis.entity.Quest;
-import com.javarush.ramis.entity.User;
 import com.javarush.ramis.repository.QuestRepository;
 
 import java.util.Collection;
