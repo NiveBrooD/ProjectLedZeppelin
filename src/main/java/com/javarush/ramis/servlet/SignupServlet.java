@@ -9,11 +9,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 
+@Setter
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
+    private UserService userService = new UserService(UserRepository.getInstance());
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/signup.jsp").forward(req,resp);
@@ -21,8 +25,6 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService userService = new UserService(UserRepository.getInstance());
-
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String roleStr = req.getParameter("role");

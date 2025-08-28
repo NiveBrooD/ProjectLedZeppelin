@@ -13,15 +13,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.*;
 
 
+@Setter
 @WebServlet("/create-answers")
 public class CreateAnswersServlet extends HttpServlet {
-    QuestService questService = new QuestService(QuestRepository.getInstance());
-    AnswerService answerService = new AnswerService(AnswerRepository.getInstance());
+    private QuestService questService = new QuestService(QuestRepository.getInstance());
+    private AnswerService answerService = new AnswerService(AnswerRepository.getInstance());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

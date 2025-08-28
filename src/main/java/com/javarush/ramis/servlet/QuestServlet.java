@@ -11,14 +11,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.Optional;
 
+@Setter
 @WebServlet("/quest")
 public class QuestServlet extends HttpServlet {
-    private final QuestService questService = new QuestService(QuestRepository.getInstance());
-    private final AnswerService answerService = new AnswerService(AnswerRepository.getInstance());
+    private QuestService questService = new QuestService(QuestRepository.getInstance());
+    private AnswerService answerService = new AnswerService(AnswerRepository.getInstance());
 
 
     @Override
@@ -34,7 +36,7 @@ public class QuestServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String answerId = req.getParameter("answerId");
         String questId = req.getParameter("questId");
-        System.out.println("questId: " + questId + " answerId: " + answerId);
+//        System.out.println("questId: " + questId + " answerId: " + answerId);
         Optional<Quest> questOptional = questService.get(Long.parseLong(questId));
         Optional<Answer> answerOptional = answerService.get(Long.parseLong(answerId));
         if (questOptional.isPresent() && answerOptional.isPresent()) {

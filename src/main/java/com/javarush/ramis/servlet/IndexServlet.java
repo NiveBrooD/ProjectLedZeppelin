@@ -14,12 +14,11 @@ import java.io.IOException;
 @WebServlet("/")
 public class IndexServlet extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
         if (session == null) {
-            session = req.getSession(true);
+            req.getSession(true);
             req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
         } else {
             QuestService questService = new QuestService(QuestRepository.getInstance());

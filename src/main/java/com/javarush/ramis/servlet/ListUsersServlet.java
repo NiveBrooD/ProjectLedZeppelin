@@ -8,17 +8,20 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.Collection;
 
+@Setter
 @WebServlet("/list-users")
 public class ListUsersServlet extends HttpServlet {
+    private UserService userService = new UserService(UserRepository.getInstance());
+
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getSession().getAttribute("user") == null) {
             resp.sendRedirect("/login");
         } else {
-            UserService userService = new UserService(UserRepository.getInstance());
             Collection<User> users = userService.getAll();
             req.setAttribute("users", users);
             req.getRequestDispatcher("/WEB-INF/list-users.jsp").forward(req, resp);

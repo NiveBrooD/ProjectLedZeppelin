@@ -8,13 +8,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 
+@Setter
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    private UserService userService = new UserService(UserRepository.getInstance());
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("WEB-INF/login.jsp").forward(req,resp);
@@ -22,13 +26,12 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService userService = new UserService(UserRepository.getInstance());
         Collection<User> all = userService.getAll();
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         Optional<User> first = all.stream().filter(u -> u.getLogin().equals(login) && u.getPassword().equals(password)).findFirst();
         if (first.isPresent()) {
-            req.getSession().setAttribute("user", first.get()); // req.getSession().setAttribute("user", first.get()); ??
+            req.getSession().setAttribute("user", first.get());
             resp.sendRedirect("/");
         } else {
             req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req,resp);

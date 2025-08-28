@@ -8,13 +8,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.Optional;
 
+@Setter
 @WebServlet("/restart")
 public class RestartServlet extends HttpServlet {
-    QuestService questService = new QuestService(QuestRepository.getInstance());
+    private QuestService questService = new QuestService(QuestRepository.getInstance());
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String questId = req.getSession().getAttribute("questId").toString();

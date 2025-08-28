@@ -8,12 +8,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 
+@Setter
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
-    private final UserService userService = new UserService(UserRepository.getInstance());
+    private UserService userService = new UserService(UserRepository.getInstance());
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

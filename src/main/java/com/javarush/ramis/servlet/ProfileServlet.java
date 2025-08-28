@@ -9,12 +9,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 
+@Setter
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
-    private final UserService userService = new UserService(UserRepository.getInstance());
+    private UserService userService = new UserService(UserRepository.getInstance());
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/profile.jsp").forward(req, resp);

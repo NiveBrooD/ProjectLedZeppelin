@@ -1,7 +1,5 @@
 package com.javarush.ramis.servlet;
 
-import com.javarush.ramis.entity.Quest;
-import com.javarush.ramis.service.QuestService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,9 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.util.Collection;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class IndexServletTest {
 
@@ -39,7 +34,6 @@ class IndexServletTest {
     @DisplayName("When session is not null then return to /index")
     void whenSessionIsNotNullThenDispatchToIndex() throws ServletException, IOException {
         IndexServlet indexServlet = new IndexServlet();
-        QuestService questService = Mockito.mock(QuestService.class);
         HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
         HttpServletResponse resp = Mockito.mock(HttpServletResponse.class);
         HttpSession session =  Mockito.mock(HttpSession.class);
@@ -48,6 +42,7 @@ class IndexServletTest {
         Mockito.when(req.getSession(false)).thenReturn(session);
         Mockito.when(req.getRequestDispatcher("/WEB-INF/index.jsp")).thenReturn(rd);
         indexServlet.doGet(req, resp);
+
 
         Mockito.verify(req).getSession(false);
         Mockito.verify(req).getRequestDispatcher("/WEB-INF/index.jsp");

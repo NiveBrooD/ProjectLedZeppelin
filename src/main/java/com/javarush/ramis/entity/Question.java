@@ -25,9 +25,7 @@ public class Question {
         this.end = end;
         this.answers = answers;
         if (!end) {
-            answers.forEach(answer -> {
-                answerService.create(answer);
-            });
+            answers.forEach(answer -> answerService.create(answer));
         }
     }
 }

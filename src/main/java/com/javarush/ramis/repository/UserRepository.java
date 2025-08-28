@@ -15,7 +15,7 @@ public class UserRepository implements Repository<User> {
 
     private UserRepository() {
         User user = new User("admin", "123", Role.ADMIN);
-        user.setId(ID_GENERATOR.incrementAndGet());
+        user.setId(ID_GENERATOR.getAndIncrement());
         users.put(user.getId(), user);
     }
 
