@@ -1,6 +1,6 @@
 package com.javarush.ramis.servlet;
 
-import com.javarush.ramis.entity.User;
+import com.javarush.ramis.dto.UserTo;
 import com.javarush.ramis.repository.UserRepository;
 import com.javarush.ramis.service.UserService;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,7 +18,7 @@ public class DeleteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        User user = (User) req.getSession().getAttribute("user");
+        UserTo user = (UserTo) req.getSession().getAttribute("user");
         userService.delete(user);
         req.getSession().invalidate();
         resp.sendRedirect("/login");

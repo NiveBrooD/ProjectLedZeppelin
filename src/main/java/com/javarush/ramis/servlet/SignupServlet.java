@@ -1,7 +1,7 @@
 package com.javarush.ramis.servlet;
 
 import com.javarush.ramis.dto.Role;
-import com.javarush.ramis.entity.User;
+import com.javarush.ramis.dto.UserTo;
 import com.javarush.ramis.repository.UserRepository;
 import com.javarush.ramis.service.UserService;
 import jakarta.servlet.ServletException;
@@ -29,7 +29,7 @@ public class SignupServlet extends HttpServlet {
         String password = req.getParameter("password");
         String roleStr = req.getParameter("role");
         Role role = Role.valueOf(roleStr);
-        User user = new User(login,password,role);
+        UserTo user = UserTo.builder().login(login).password(password).role(role).build();
         userService.create(user);
         req.getSession().setAttribute("user", user);
         resp.sendRedirect("/");

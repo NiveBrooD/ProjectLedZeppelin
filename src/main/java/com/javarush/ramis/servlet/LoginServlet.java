@@ -1,6 +1,6 @@
 package com.javarush.ramis.servlet;
 
-import com.javarush.ramis.entity.User;
+import com.javarush.ramis.dto.UserTo;
 import com.javarush.ramis.exception.UserNotFoundException;
 import com.javarush.ramis.repository.UserRepository;
 import com.javarush.ramis.service.UserService;
@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         try {
-            User user = userService.findByLoginAndPassword(login, password);
+            UserTo user = userService.findByLoginAndPassword(login, password);
             req.getSession().setAttribute("user", user);
             resp.sendRedirect("/");
         } catch (UserNotFoundException ex) {

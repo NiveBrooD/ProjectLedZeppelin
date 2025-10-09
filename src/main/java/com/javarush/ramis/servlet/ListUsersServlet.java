@@ -1,6 +1,6 @@
 package com.javarush.ramis.servlet;
 
-import com.javarush.ramis.entity.User;
+import com.javarush.ramis.dto.UserTo;
 import com.javarush.ramis.repository.UserRepository;
 import com.javarush.ramis.service.UserService;
 import jakarta.servlet.ServletException;
@@ -19,7 +19,7 @@ public class ListUsersServlet extends HttpServlet {
     private final UserService userService = new UserService(new UserRepository());
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Collection<User> users = userService.getAll();
+        Collection<UserTo> users = userService.getAll();
         req.setAttribute("users", users);
         req.getRequestDispatcher("/WEB-INF/list-users.jsp").forward(req, resp);
     }

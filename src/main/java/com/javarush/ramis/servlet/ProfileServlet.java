@@ -1,7 +1,7 @@
 package com.javarush.ramis.servlet;
 
 import com.javarush.ramis.dto.Role;
-import com.javarush.ramis.entity.User;
+import com.javarush.ramis.dto.UserTo;
 import com.javarush.ramis.repository.UserRepository;
 import com.javarush.ramis.service.UserService;
 import jakarta.servlet.ServletException;
@@ -25,8 +25,8 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        User currentUser = (User) req.getSession().getAttribute("user");
-        User user = User.builder()
+        UserTo currentUser = (UserTo) req.getSession().getAttribute("user");
+        UserTo user = UserTo.builder()
                 .id(currentUser.getId())
                 .login(req.getParameter("login"))
                 .password(req.getParameter("password"))
