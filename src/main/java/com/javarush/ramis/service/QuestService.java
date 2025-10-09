@@ -1,10 +1,10 @@
 package com.javarush.ramis.service;
 
 import com.javarush.ramis.entity.Quest;
+import com.javarush.ramis.exception.QuestException;
 import com.javarush.ramis.repository.QuestRepository;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public class QuestService {
     private final QuestRepository questRepository;
@@ -25,7 +25,13 @@ public class QuestService {
     public Collection<Quest> getAll() {
         return questRepository.getAll();
     }
-    public Optional<Quest> get(long id) {
-        return questRepository.get(id);
+    public Quest get(long id) {
+        return questRepository.get(id).orElseThrow(
+                () -> new QuestException("Quest with id " + id + "not found."));
+    }
+
+    public void restartQuest(Quest quest) {
+        quest.restartQuest();
+        questRepository.update(quest);
     }
 }

@@ -15,19 +15,22 @@
             background: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         h3 {
             color: #333;
             margin-bottom: 20px;
             text-align: center;
         }
+
         .answers {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 10px;
         }
+
         .answer-btn {
             background: #4CAF50;
             color: white;
@@ -37,13 +40,16 @@
             cursor: pointer;
             transition: background 0.2s;
         }
+
         .answer-btn:hover {
             background: #45a049;
         }
+
         .end-message {
             text-align: center;
             margin-top: 20px;
         }
+
         .end-message button {
             background: #3498db;
             color: white;
@@ -61,7 +67,7 @@
     <c:choose>
         <c:when test="${not question.end}">
             <div class="answers">
-                <c:forEach var="answer" items="${question.answers}">
+                <c:forEach var="answer" items="${answers}">
                     <form action="quest" method="post">
                         <input type="hidden" name="answerId" value="${answer.id}">
                         <input type="hidden" name="questId" value="${quest.id}">
@@ -76,9 +82,11 @@
             <div class="end-message">
                 <p style="color: #0f2537">Квест завершен!</p>
                 <button onclick="location.href='/'">Вернуться к списку квестов</button>
-                <button onclick="location.href='/restart'">Начать заново</button>
+                <form method="post" action="restart">
+                    <input type="hidden" name="questId" value="${quest.id}">
+                    <button type="submit">Начать заново</button>
+                </form>
             </div>
-
         </c:otherwise>
     </c:choose>
 </div>

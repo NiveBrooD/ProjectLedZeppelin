@@ -13,6 +13,7 @@ import java.io.IOException;
 
 @WebServlet("/")
 public class IndexServlet extends HttpServlet {
+    private final QuestService questService = new QuestService(new QuestRepository());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -21,7 +22,6 @@ public class IndexServlet extends HttpServlet {
             req.getSession(true);
             req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, resp);
         } else {
-            QuestService questService = new QuestService(QuestRepository.getInstance());
             session.setAttribute("quests", questService.getAll());
             req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
         }

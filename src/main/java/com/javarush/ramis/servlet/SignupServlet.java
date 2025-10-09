@@ -1,6 +1,6 @@
 package com.javarush.ramis.servlet;
 
-import com.javarush.ramis.entity.Role;
+import com.javarush.ramis.dto.Role;
 import com.javarush.ramis.entity.User;
 import com.javarush.ramis.repository.UserRepository;
 import com.javarush.ramis.service.UserService;
@@ -16,7 +16,7 @@ import java.io.IOException;
 @Setter
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
-    private UserService userService = new UserService(UserRepository.getInstance());
+    private UserService userService = new UserService(new UserRepository());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -24,7 +24,7 @@ public class SignupServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String roleStr = req.getParameter("role");

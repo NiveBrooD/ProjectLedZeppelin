@@ -51,7 +51,7 @@
                     <div class="answer-block">
                         <div>
                             <label style="color: #212529">Ответ 1: </label>
-                            <input type="text" name="q${question.id}_a1_text" required>
+                            <input type="text" name="q${question.id}_a1_text" maxlength="255" required>
                         </div>
                         <div>
                             <label style="color: #212529">ID следующего вопроса: </label>
@@ -80,7 +80,7 @@
         newAnswer.innerHTML = `
                 <div>
                     <label style="color: #212529">Ответ \${answerCount}: </label>
-                    <input type="text" name="q\${questionId}_a\${answerCount}_text" required>
+                    <input type="text" name="q\${questionId}_a\${answerCount}_text" maxlength="255" required>
                 </div>
                 <div>
                     <label style="color: #212529">ID следующего вопроса: </label>

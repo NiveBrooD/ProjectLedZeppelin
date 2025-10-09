@@ -20,11 +20,12 @@
                     <div class="card-body d-flex flex-column align-items-center">
                         <form class="text-center" method="post" action="login">
                             <div class="mb-3">
-                                <input class="form-control" type="text" name="login" placeholder="Login" required>
+                                <input class="form-control" type="text" name="login" placeholder="Login"
+                                       required maxlength="20">
                             </div>
                             <div class="mb-3">
                                 <input class="form-control" type="password" name="password" placeholder="Password"
-                                       required>
+                                       required maxlength="100">
                             </div>
                             <div class="mb-3">
                                 <button class="btn btn-primary w-100 d-block" type="submit"

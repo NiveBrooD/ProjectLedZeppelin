@@ -1,11 +1,10 @@
 package com.javarush.ramis.entity;
 
-import com.javarush.ramis.repository.AnswerRepository;
-import com.javarush.ramis.service.AnswerService;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 import java.util.List;
 
@@ -13,19 +12,32 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "questions")
 public class Question {
-    private Long id;
-    private String description;
-    private List<Answer> answers;
-    private boolean end;
-    AnswerService answerService = new AnswerService(AnswerRepository.getInstance());
 
-    public Question(String description, List<Answer> answers, boolean end) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "quest_id", nullable = false)
+    private Quest quest;
+
+    @Column(name = "is_end", nullable = false)
+    private boolean end;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    private List<Answer> answers;
+
+    public Question(String description, Quest quest, List<Answer> answers, boolean end) {
         this.description = description;
-        this.end = end;
         this.answers = answers;
-        if (!end) {
-            answers.forEach(answer -> answerService.create(answer));
-        }
+        this.quest = quest;
+        this.end = end;
     }
 }

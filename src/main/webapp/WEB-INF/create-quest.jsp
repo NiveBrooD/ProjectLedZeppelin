@@ -77,16 +77,16 @@
     <input type="hidden" name="totalQuestions" value="1">
     <div>
         <label>Название Квеста</label>
-        <input type="text" name="title" required>
+        <input type="text" name="title" required maxlength="128">
     </div>
     <div>
         <label>Описание квеста</label>
-        <input type="text" name="description" required>
+        <input type="text" name="description" maxlength="255" required>
     </div>
     <div id="questions">
         <div class="question-container">
             <label>Вопрос 1</label>
-            <input type="text" name="q1" required>
+            <input type="text" name="q1" maxlength="255" required>
             <input type="hidden" name="q1ID" value="1">
             <label>
                 <input type="checkbox" name="q1_end"> Это последний вопрос?
@@ -107,7 +107,7 @@
         newQuestion.className = "question-container";
         newQuestion.innerHTML = `
                 <label>Вопрос \${questionCounter}</label>
-                <input type="text" name="q\${questionCounter}" required>
+                <input type="text" name="q\${questionCounter}" maxlength="255" required>
                 <input type="hidden" name="q\${questionCounter}ID" value="\${questionCounter}">
                 <label>
                     <input type="checkbox" name="q\${questionCounter}_end" value="true">

@@ -92,6 +92,7 @@
                 <div class="quest-item">
                     <h3 class="quest-title">${quest.title}</h3>
                     <p class="quest-description">${quest.description}</p>
+                    <p class="quest-description">Автор: ${quest.author.login}</p>
                     <button class="play-button" onclick="location.href='/quest?id=${quest.id}'">
                         Играть
                     </button>

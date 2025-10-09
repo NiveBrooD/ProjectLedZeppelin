@@ -1,4 +1,4 @@
-package com.javarush.ramis.entity;
+package com.javarush.ramis.dto;
 
 public enum Role {
     GUEST,

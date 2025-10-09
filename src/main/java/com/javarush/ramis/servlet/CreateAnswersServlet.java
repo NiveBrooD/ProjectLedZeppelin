@@ -4,9 +4,7 @@ import com.javarush.ramis.entity.Answer;
 import com.javarush.ramis.entity.Quest;
 import com.javarush.ramis.entity.Question;
 import com.javarush.ramis.entity.User;
-import com.javarush.ramis.repository.AnswerRepository;
 import com.javarush.ramis.repository.QuestRepository;
-import com.javarush.ramis.service.AnswerService;
 import com.javarush.ramis.service.QuestService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,8 +20,7 @@ import java.util.*;
 @Setter
 @WebServlet("/create-answers")
 public class CreateAnswersServlet extends HttpServlet {
-    private QuestService questService = new QuestService(QuestRepository.getInstance());
-    private AnswerService answerService = new AnswerService(AnswerRepository.getInstance());
+    private final QuestService questService = new QuestService(new QuestRepository());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,23 +33,26 @@ public class CreateAnswersServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, String[]> allParams = req.getParameterMap();
 
         Quest quest = (Quest) req.getSession().getAttribute("newQuest");
         List<Question> questions = (List<Question>) req.getSession().getAttribute("newQuestions");
+
         for (Question question : questions) {
             List<Answer> answers = new ArrayList<>();
             Long id = question.getId();
+
             int totalAnswers = findTotalAnswers(allParams, id);
             for (int i = 1; i <= totalAnswers; i++) {
                 String answerDescription = req.getParameter("q" + id + "_a" + i + "_text");
                 Long answerNextQuestionId = Long.parseLong(req.getParameter("q" + id + "_a" + i + "_next"));
-                Optional<Question> first = questions.stream().filter(q -> q.getId().equals(answerNextQuestionId)).findFirst();
+                Optional<Question> first = questions.stream()
+                        .filter(q -> q.getId().equals(answerNextQuestionId))
+                        .findFirst();
                 if (first.isPresent()) {
                     Question nextQuestion = first.get();
-                    Answer answer = new Answer(answerDescription, nextQuestion);
-                    answerService.create(answer);
+                    Answer answer = new Answer(answerDescription, question ,nextQuestion);
                     answers.add(answer);
                 } else {
                     resp.sendRedirect("/create-answers");
@@ -62,6 +62,8 @@ public class CreateAnswersServlet extends HttpServlet {
             }
         }
         questService.create(quest);
+
+        //Очищаем сессию от уже ненужных аттрибутов
         User user = (User) req.getSession().getAttribute("user");
         req.getSession().invalidate();
         req.getSession(true).setAttribute("user", user);

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@include file="parts/header.jsp" %>
-<%@page import="com.javarush.ramis.entity.Role" %>
+<%@page import="com.javarush.ramis.dto.Role" %>
 <body>
 <main class="container my-5">
     <form method="post" action="profile"

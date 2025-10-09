@@ -16,15 +16,11 @@ import java.util.Collection;
 @Setter
 @WebServlet("/list-users")
 public class ListUsersServlet extends HttpServlet {
-    private UserService userService = new UserService(UserRepository.getInstance());
+    private final UserService userService = new UserService(new UserRepository());
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession().getAttribute("user") == null) {
-            resp.sendRedirect("/login");
-        } else {
-            Collection<User> users = userService.getAll();
-            req.setAttribute("users", users);
-            req.getRequestDispatcher("/WEB-INF/list-users.jsp").forward(req, resp);
-        }
+        Collection<User> users = userService.getAll();
+        req.setAttribute("users", users);
+        req.getRequestDispatcher("/WEB-INF/list-users.jsp").forward(req, resp);
     }
 }
