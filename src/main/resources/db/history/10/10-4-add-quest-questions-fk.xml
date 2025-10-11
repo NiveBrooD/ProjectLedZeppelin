@@ -1,0 +1,35 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1760097459025-1" author="Ramis">
+        <addForeignKeyConstraint
+                baseTableName="quests"
+                baseColumnNames="first_question_id"
+                referencedTableName="questions"
+                referencedColumnNames="id"
+                constraintName="quests_first_question_fk"/>
+        <addForeignKeyConstraint
+                baseTableName="quests"
+                baseColumnNames="current_question_id"
+                referencedTableName="questions"
+                referencedColumnNames="id"
+                constraintName="quests_current_question_fk"/>
+        <addForeignKeyConstraint
+                baseTableName="quests"
+                baseColumnNames="author_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="quests_author_fk"
+                onDelete="CASCADE"/>
+        <addForeignKeyConstraint
+                baseTableName="questions"
+                baseColumnNames="quest_id"
+                referencedTableName="quests"
+                referencedColumnNames="id"
+                constraintName="questions_quest_fk"
+                onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>

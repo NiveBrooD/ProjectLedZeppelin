@@ -1,7 +1,7 @@
 package com.javarush.ramis.service;
 
 import com.javarush.ramis.dto.AnswerTo;
-import com.javarush.ramis.entity.Question;
+import com.javarush.ramis.dto.QuestionTo;
 import com.javarush.ramis.exception.QuestException;
 import com.javarush.ramis.mapping.Dto;
 import com.javarush.ramis.repository.AnswerRepository;
@@ -43,7 +43,7 @@ public class AnswerService {
         answerRepository.update(dto.from(answer));
     }
 
-    public List<AnswerTo> getAnswersForQuestion(Question question) {
-        return answerRepository.get(question).stream().map(dto::from).collect(Collectors.toList());
+    public List<AnswerTo> getAnswersForQuestion(QuestionTo question) {
+        return answerRepository.get(dto.from(question)).stream().map(dto::from).collect(Collectors.toList());
     }
 }

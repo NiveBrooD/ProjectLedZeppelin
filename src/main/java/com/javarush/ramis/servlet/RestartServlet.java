@@ -1,6 +1,6 @@
 package com.javarush.ramis.servlet;
 
-import com.javarush.ramis.entity.Quest;
+import com.javarush.ramis.dto.QuestTo;
 import com.javarush.ramis.exception.QuestException;
 import com.javarush.ramis.repository.QuestRepository;
 import com.javarush.ramis.service.QuestService;
@@ -21,7 +21,7 @@ public class RestartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String questId = req.getParameter("questId");
         try {
-            Quest quest = questService.get(Long.parseLong(questId));
+            QuestTo quest = questService.get(Long.parseLong(questId));
             questService.restartQuest(quest);
             resp.sendRedirect("/quest?id=" + questId);
         } catch (QuestException e) {

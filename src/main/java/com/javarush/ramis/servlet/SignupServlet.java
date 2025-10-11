@@ -30,7 +30,13 @@ public class SignupServlet extends HttpServlet {
         String roleStr = req.getParameter("role");
         Role role = Role.valueOf(roleStr);
         UserTo user = UserTo.builder().login(login).password(password).role(role).build();
-        userService.create(user);
+        try {
+            userService.create(user);
+        } catch (RuntimeException e) {
+            resp.sendRedirect("/signup");
+            return;
+        }
+        user = userService.findByLoginAndPassword(login, password);
         req.getSession().setAttribute("user", user);
         resp.sendRedirect("/");
     }

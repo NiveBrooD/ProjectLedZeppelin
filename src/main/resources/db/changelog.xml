@@ -1,0 +1,16 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <include file="db/history/10/10-1-add-users.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/10-2-add-quests.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/10-3-add-questions.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/10-4-add-quest-questions-fk.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/10-5-add-answers.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/10-6-add-answers-fk.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/10-7-add-users-data.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/10-8-add-quests-data.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/10-9-add-answers-data.xml" relativeToChangelogFile="false"/>
+</databaseChangeLog>

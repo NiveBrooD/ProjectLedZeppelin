@@ -1,6 +1,5 @@
 package com.javarush.ramis.dto;
 
-import com.javarush.ramis.entity.Question;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +8,6 @@ import lombok.Data;
 public class AnswerTo {
     private Long id;
     private String description;
-    private Question question;
-    private Question nextQuestion;
+    private Long questionId;
+    private Long nextQuestionId;
 }

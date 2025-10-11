@@ -10,7 +10,7 @@ import java.util.List;
 public class QuestionTo {
     private Long id;
     private String description;
-    private QuestTo quest;
+    private Long questId;
     private boolean end;
     private List<AnswerTo> answers;
 }

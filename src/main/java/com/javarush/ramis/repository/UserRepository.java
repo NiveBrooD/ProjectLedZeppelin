@@ -2,6 +2,7 @@ package com.javarush.ramis.repository;
 
 import com.javarush.ramis.config.SessionCreator;
 import com.javarush.ramis.entity.User;
+import com.javarush.ramis.exception.QuestException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -43,7 +44,7 @@ public class UserRepository implements Repository<User> {
             log.info("get: user={}", user);
             transaction.commit();
             return Optional.ofNullable(user);
-        }  catch (Exception ex) {
+        } catch (Exception ex) {
             log.error("get User by id failed: {}", ex.getMessage());
             transaction.rollback();
             throw new RuntimeException(ex);
@@ -52,16 +53,37 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public void create(User user) {
+        if (findByLogin(user.getLogin()) != null) {
+            log.warn("User with login={} already exists", user.getLogin());
+            throw new QuestException("User with login already exists");
+        }
+
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
-        try (session) {
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
             session.persist(user);
             log.info("create: user id={}, login='{}'", user.getId(), user.getLogin());
             transaction.commit();
         } catch (Exception ex) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
             log.error("create User failed for login {}: {}", user.getLogin(), ex.getMessage());
-            transaction.rollback();
             throw new RuntimeException(ex);
+        } finally {
+            session.close();
+        }
+    }
+
+    private User findByLogin(String login) {
+        try (Session session = sessionCreator.getSession()) {
+            return session.createQuery("from User where login = :login", User.class)
+                    .setParameter("login", login)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            log.error("findByLogin failed for login {}: {}", login, ex.getMessage());
+            return null;
         }
     }
 

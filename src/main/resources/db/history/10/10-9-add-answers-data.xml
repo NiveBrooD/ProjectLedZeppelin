@@ -1,0 +1,62 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1760100989794-1" author="Ramis">
+        <insert tableName="answers">
+            <column name="id">1</column>
+            <column name="description">
+                Отклонить вызов
+            </column>
+            <column name="question_id">1</column>
+            <column name="next_question_id">2</column>
+        </insert>
+
+        <insert tableName="answers">
+            <column name="id">2</column>
+            <column name="description">
+                Принять вызов
+            </column>
+            <column name="question_id">1</column>
+            <column name="next_question_id">3</column>
+        </insert>
+
+        <insert tableName="answers">
+            <column name="id">3</column>
+            <column name="description">
+                Отказаться подниматься на мостик
+            </column>
+            <column name="question_id">3</column>
+            <column name="next_question_id">4</column>
+        </insert>
+
+        <insert tableName="answers">
+            <column name="id">4</column>
+            <column name="description">
+                Подняться на мостик
+            </column>
+            <column name="question_id">3</column>
+            <column name="next_question_id">5</column>
+        </insert>
+
+        <insert tableName="answers">
+            <column name="id">5</column>
+            <column name="description">
+                Солгать о себе
+            </column>
+            <column name="question_id">5</column>
+            <column name="next_question_id">6</column>
+        </insert>
+
+        <insert tableName="answers">
+            <column name="id">6</column>
+            <column name="description">
+                Рассказать правду о себе
+            </column>
+            <column name="question_id">5</column>
+            <column name="next_question_id">7</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

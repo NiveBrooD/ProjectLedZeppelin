@@ -1,13 +1,15 @@
 package com.javarush.ramis.servlet;
 
 import com.javarush.ramis.dto.AnswerTo;
-import com.javarush.ramis.entity.Quest;
-import com.javarush.ramis.entity.Question;
+import com.javarush.ramis.dto.QuestTo;
+import com.javarush.ramis.dto.QuestionTo;
 import com.javarush.ramis.exception.QuestException;
 import com.javarush.ramis.repository.AnswerRepository;
 import com.javarush.ramis.repository.QuestRepository;
+import com.javarush.ramis.repository.QuestionRepository;
 import com.javarush.ramis.service.AnswerService;
 import com.javarush.ramis.service.QuestService;
+import com.javarush.ramis.service.QuestionService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,13 +27,14 @@ import java.util.List;
 public class QuestServlet extends HttpServlet {
     private QuestService questService = new QuestService(new QuestRepository());
     private AnswerService answerService = new AnswerService(new AnswerRepository());
+    private QuestionService questionService = new QuestionService(new QuestionRepository());
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         try {
-            Quest quest = questService.get(Long.parseLong(id));
+            QuestTo quest = questService.get(Long.parseLong(id));
             updateSessionAttributes(req, quest);
             req.getRequestDispatcher("/WEB-INF/quest.jsp").forward(req, resp);
         } catch (QuestException e) {
@@ -47,18 +50,18 @@ public class QuestServlet extends HttpServlet {
         String questId = req.getParameter("questId");
         log.info("questId={}, answerId={}", questId, answerId);
 
-        Quest quest = questService.get(Long.parseLong(questId));
+        QuestTo quest = questService.get(Long.parseLong(questId));
         AnswerTo answer = answerService.get(Long.parseLong(answerId));
 
-        quest.setCurrentQuestion(answer.getNextQuestion());
+        quest.setCurrentQuestion(questionService.get(answer.getNextQuestionId()));
         questService.update(quest);
         updateSessionAttributes(req, quest);
 
         req.getRequestDispatcher("/WEB-INF/quest.jsp").forward(req, resp);
     }
 
-    private void updateSessionAttributes(HttpServletRequest req, Quest quest) {
-        Question currentQuestion = quest.getCurrentQuestion();
+    private void updateSessionAttributes(HttpServletRequest req, QuestTo quest) {
+        QuestionTo currentQuestion = quest.getCurrentQuestion();
         List<AnswerTo> answersForQuestion = answerService.getAnswersForQuestion(currentQuestion);
 
         req.setAttribute("quest", quest);
