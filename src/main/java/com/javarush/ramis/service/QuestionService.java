@@ -1,5 +1,6 @@
 package com.javarush.ramis.service;
 
+import com.javarush.ramis.dto.AnswerTo;
 import com.javarush.ramis.dto.QuestionTo;
 import com.javarush.ramis.exception.QuestException;
 import com.javarush.ramis.mapping.Dto;
@@ -31,4 +32,10 @@ public class QuestionService {
         questionRepository.create(dto.from(question));
     }
 
+    public QuestionTo getNextQuestion(AnswerTo answer) {
+       return questionRepository.getNextQuestionByAnswerId(answer.getId())
+               .map(dto::from)
+               .orElseThrow(() -> new QuestException("Question not found"));
+
+    }
 }

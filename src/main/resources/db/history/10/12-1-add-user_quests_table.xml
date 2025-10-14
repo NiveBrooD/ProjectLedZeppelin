@@ -1,0 +1,45 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="1760277540930-1" author="Ramis">
+        <createTable tableName="user_quests">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quest_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="current_question_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1760277763589-1" author="Ramis">
+        <addForeignKeyConstraint
+                baseTableName="user_quests"
+                baseColumnNames="user_id"
+                constraintName="user_quests_user_ud_fk"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+        <addForeignKeyConstraint
+                baseTableName="user_quests"
+                baseColumnNames="quest_id"
+                constraintName="user_questS_quest_id_fk"
+                referencedTableName="quests"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+        <addForeignKeyConstraint
+                baseTableName="user_quests"
+                baseColumnNames="current_question_id"
+                constraintName="user_quests_current_question_id"
+                referencedTableName="questions"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>

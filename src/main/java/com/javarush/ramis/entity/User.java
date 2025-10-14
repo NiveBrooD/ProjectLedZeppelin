@@ -4,6 +4,9 @@ import com.javarush.ramis.dto.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -26,6 +29,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserQuest> quests = new ArrayList<>();
 
     public User(String login, String password, Role role) {
         this.login = login;

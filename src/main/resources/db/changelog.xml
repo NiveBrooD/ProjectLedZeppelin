@@ -13,4 +13,6 @@
     <include file="db/history/10/10-7-add-users-data.xml" relativeToChangelogFile="false"/>
     <include file="db/history/10/10-8-add-quests-data.xml" relativeToChangelogFile="false"/>
     <include file="db/history/10/10-9-add-answers-data.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/12-1-add-user_quests_table.xml" relativeToChangelogFile="false"/>
+    <include file="db/history/10/14-1-fix-sequences.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

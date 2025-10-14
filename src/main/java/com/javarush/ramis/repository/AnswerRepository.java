@@ -5,7 +5,6 @@ import com.javarush.ramis.entity.Answer;
 import com.javarush.ramis.entity.Question;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,16 +21,16 @@ public class AnswerRepository implements Repository<Answer> {
     @Override
     public Collection<Answer> getAll() {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
         try (session) {
+            session.beginTransaction();
             List<Answer> answers = session.createQuery("select a from Answer a " +
                                                        "inner join fetch a.nextQuestion " +
                                                        "inner join fetch a.question", Answer.class).list();
             log.info("getAll answers: {}", answers.size());
-            transaction.commit();
+            session.getTransaction().commit();
             return answers;
         } catch (Exception ex) {
-            transaction.rollback();
+            session.getTransaction().rollback();
             log.error("getAll answers: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
@@ -40,7 +39,7 @@ public class AnswerRepository implements Repository<Answer> {
     @Override
     public Optional<Answer> get(long id) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             Optional<Answer> answer = session.createQuery("select a from Answer a " +
                                                 "inner join fetch a.nextQuestion " +
@@ -48,12 +47,12 @@ public class AnswerRepository implements Repository<Answer> {
                                                 "where a.id = :id", Answer.class)
                     .setParameter("id", id)
                     .uniqueResultOptional();
-            transaction.commit();
-            log.info("get answer: {}", answer);
+            session.getTransaction().commit();
+            log.info("getQuest answer: {}", answer);
             return answer;
         } catch (Exception ex) {
-            transaction.rollback();
-            log.error("get answer: {}", ex.getMessage());
+            session.getTransaction().rollback();
+            log.error("getQuest answer: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -61,13 +60,13 @@ public class AnswerRepository implements Repository<Answer> {
     @Override
     public void create(Answer answer) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             session.persist(answer);
-            transaction.commit();
+            session.getTransaction().commit();
             log.info("create answer: {}", answer);
         } catch (Exception ex) {
-            transaction.rollback();
+            session.getTransaction().rollback();
             log.error("create answer: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
@@ -76,13 +75,13 @@ public class AnswerRepository implements Repository<Answer> {
     @Override
     public void delete(Answer answer) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             session.remove(answer);
-            transaction.commit();
+            session.getTransaction().commit();
             log.info("delete answer: {}", answer);
         } catch (Exception ex) {
-            transaction.rollback();
+            session.getTransaction().rollback();
             log.error("delete answer: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
@@ -91,13 +90,13 @@ public class AnswerRepository implements Repository<Answer> {
     @Override
     public void update(Answer answer) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             session.merge(answer);
-            transaction.commit();
+            session.getTransaction().commit();
             log.info("update answer: {}", answer);
         } catch (Exception ex) {
-            transaction.rollback();
+            session.getTransaction().rollback();
             log.error("update answer: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
@@ -105,16 +104,16 @@ public class AnswerRepository implements Repository<Answer> {
 
     public List<Answer> get(Question question) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             List<Answer> answers = session.createQuery("select a from Answer a where a.question = :question", Answer.class)
                     .setParameter("question", question).list();
-            transaction.commit();
-            log.info("get answer: {}", answers.size());
+            session.getTransaction().commit();
+            log.info("getQuest answer: {}", answers.size());
             return answers;
         } catch (Exception ex) {
-            transaction.rollback();
-            log.error("get answer: {}", ex.getMessage());
+            session.getTransaction().rollback();
+            log.error("getQuest answer: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
     }

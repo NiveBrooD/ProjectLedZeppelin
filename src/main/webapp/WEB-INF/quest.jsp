@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="parts/header.jsp" %>
-<c:set var="question" value="${quest.currentQuestion}"/>
+<c:set var="question" value="${userQuest.currentQuestion}"/>
 <head>
     <style>
 

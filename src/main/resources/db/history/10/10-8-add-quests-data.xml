@@ -84,7 +84,6 @@
     <changeSet id="1760100675818-1" author="Ramis">
         <update tableName="quests">
             <column name="first_question_id">1</column>
-            <column name="current_question_id">1</column>
             <where>id = 1</where>
         </update>
     </changeSet>

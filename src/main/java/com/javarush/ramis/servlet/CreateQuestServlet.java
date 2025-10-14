@@ -1,8 +1,10 @@
 package com.javarush.ramis.servlet;
 
-import com.javarush.ramis.dto.QuestTo;
-import com.javarush.ramis.dto.QuestionTo;
 import com.javarush.ramis.dto.UserTo;
+import com.javarush.ramis.entity.Quest;
+import com.javarush.ramis.entity.Question;
+import com.javarush.ramis.entity.User;
+import com.javarush.ramis.mapping.Dto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,6 +18,7 @@ import java.util.Map;
 
 @WebServlet("/create-quest")
 public class CreateQuestServlet extends HttpServlet {
+    private final Dto dto = Dto.MAPPER;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,17 +29,18 @@ public class CreateQuestServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, String[]> allParams = req.getParameterMap();
 
-        List<QuestionTo> questions = new ArrayList<>();
+        List<Question> questions = new ArrayList<>();
         String title = req.getParameter("title");
         String description = req.getParameter("description");
         UserTo user = (UserTo) req.getSession().getAttribute("user");
+        User from = dto.from(user);
 
         int total = Integer.parseInt(req.getParameter("totalQuestions"));
         for (int i = 1; i <= total; i++) {
             Long tempId = Long.parseLong(req.getParameter("q" + i + "ID"));
-            QuestionTo question = QuestionTo.builder()
+            Question question = Question.builder()
                     .description(req.getParameter("q" + i))
-                    .questId(null)
+                    .quest(null)
                     .answers(new ArrayList<>())
                     .end(allParams.containsKey("q" + i + "_end"))
                     .build();
@@ -44,11 +48,11 @@ public class CreateQuestServlet extends HttpServlet {
             question.setId(tempId);
             questions.add(question);
         }
-        QuestTo quest = QuestTo.builder()
+        Quest quest = Quest.builder()
                 .title(title)
                 .description(description)
                 .firstQuestion(questions.get(0))
-                .author(user)
+                .author(from)
                 .build();
         quest.setQuestions(questions);
 

@@ -4,7 +4,6 @@ import com.javarush.ramis.config.SessionCreator;
 import com.javarush.ramis.entity.Question;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,14 +20,14 @@ public class QuestionRepository implements Repository<Question> {
     @Override
     public Collection<Question> getAll() {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             List<Question> questions = session.createQuery("select q from Question q", Question.class).list();
-            transaction.commit();
+            session.getTransaction().commit();
             log.info("getAll questions successful, size={}", questions.size());
             return questions;
         } catch (Exception ex) {
-            transaction.rollback();
+            session.getTransaction().rollback();
             log.error("getAll questions failed: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
@@ -37,7 +36,7 @@ public class QuestionRepository implements Repository<Question> {
     @Override
     public Optional<Question> get(long id) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             Optional<Question> question = session.createQuery("select q from Question q " +
                                                               "left join fetch q.quest " +
@@ -45,12 +44,12 @@ public class QuestionRepository implements Repository<Question> {
                                                               "where q.id = :id", Question.class)
                     .setParameter("id", id)
                     .uniqueResultOptional();
-            transaction.commit();
-            log.info("get question successful, id={}", id);
+            session.getTransaction().commit();
+            log.info("getQuest question successful, id={}", id);
             return question;
         } catch (Exception ex) {
-            transaction.rollback();
-            log.error("get question failed: {}", ex.getMessage());
+            session.getTransaction().rollback();
+            log.error("getQuest question failed: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
@@ -58,13 +57,13 @@ public class QuestionRepository implements Repository<Question> {
     @Override
     public void create(Question question) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             session.persist(question);
-            transaction.commit();
+            session.getTransaction().commit();
             log.info("create question successful, id={}", question.getId());
         } catch (Exception ex) {
-            transaction.rollback();
+            session.getTransaction().rollback();
             log.error("create question failed: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
@@ -73,13 +72,13 @@ public class QuestionRepository implements Repository<Question> {
     @Override
     public void delete(Question question) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             session.remove(question);
-            transaction.commit();
+            session.getTransaction().commit();
             log.info("delete question successful, id={}", question.getId());
         } catch (Exception ex) {
-            transaction.rollback();
+            session.getTransaction().rollback();
             log.error("delete question failed: {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
@@ -88,15 +87,33 @@ public class QuestionRepository implements Repository<Question> {
     @Override
     public void update(Question question) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             session.merge(question);
-            transaction.commit();
+            session.getTransaction().commit();
             log.info("update question successful, id={}", question.getId());
         } catch (Exception ex) {
-            transaction.rollback();
+            session.getTransaction().rollback();
             log.error("update question failed: {}", ex.getMessage());
             throw new RuntimeException(ex);
+        }
+    }
+
+    public Optional<Question> getNextQuestionByAnswerId(long answerId) {
+        Session session = sessionCreator.getSession();
+        session.beginTransaction();
+        try {
+            Optional<Question> question = session.createQuery("select a.nextQuestion from Answer a " +
+                                                              "where a.id = :answerId", Question.class)
+                    .setParameter("answerId", answerId)
+                    .uniqueResultOptional();
+            session.getTransaction().commit();
+            return question;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw new RuntimeException(e);
+        } finally {
+            session.clear();
         }
     }
 }

@@ -15,6 +15,10 @@ public class Liquibase {
         properties = loadProperties();
     }
 
+    public Liquibase(Properties properties) {
+        this.properties = properties;
+    }
+
     public void start() {
         System.out.println("Running Liquibase...");
         try {

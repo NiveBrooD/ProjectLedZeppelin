@@ -3,6 +3,8 @@ package com.javarush.ramis.repository;
 import com.javarush.ramis.config.SessionCreator;
 import com.javarush.ramis.entity.User;
 import com.javarush.ramis.exception.QuestException;
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -12,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@AllArgsConstructor
+@Setter
 public class UserRepository implements Repository<User> {
     private final SessionCreator sessionCreator;
 
@@ -41,11 +45,11 @@ public class UserRepository implements Repository<User> {
         Transaction transaction = session.beginTransaction();
         try (session) {
             User user = session.get(User.class, id);
-            log.info("get: user={}", user);
+            log.info("getQuest: user={}", user);
             transaction.commit();
             return Optional.ofNullable(user);
         } catch (Exception ex) {
-            log.error("get User by id failed: {}", ex.getMessage());
+            log.error("getQuest User by id failed: {}", ex.getMessage());
             transaction.rollback();
             throw new RuntimeException(ex);
         }
@@ -59,9 +63,8 @@ public class UserRepository implements Repository<User> {
         }
 
         Session session = sessionCreator.getSession();
-        Transaction transaction = null;
+        Transaction transaction = session.beginTransaction();
         try {
-            transaction = session.beginTransaction();
             session.persist(user);
             log.info("create: user id={}, login='{}'", user.getId(), user.getLogin());
             transaction.commit();

@@ -6,15 +6,16 @@ import com.javarush.ramis.entity.Quest;
 import com.javarush.ramis.entity.Question;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class QuestRepository implements Repository<Quest> {
     private final SessionCreator sessionCreator;
 
-    public QuestRepository( ) {
+    public QuestRepository() {
         this.sessionCreator = SessionCreator.getInstance();
     }
 
@@ -38,18 +39,17 @@ public class QuestRepository implements Repository<Quest> {
     @Override
     public Collection<Quest> getAll() {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             List<Quest> quests = session.createQuery("select q from Quest q " +
                                                      "inner join fetch q.firstQuestion " +
-                                                     "inner join fetch q.currentQuestion " +
-                                                     "inner join fetch q.questions" , Quest.class).list();
-            log.info("get all quests: {}", quests);
-            transaction.commit();
+                                                     "inner join fetch q.questions", Quest.class).list();
+            log.info("getQuest all quests: {}", quests);
+            session.getTransaction().commit();
             return quests;
         } catch (Exception ex) {
-            log.error("get all quests: {}", ex.getMessage());
-            transaction.rollback();
+            log.error("getQuest all quests: {}", ex.getMessage());
+            session.getTransaction().rollback();
             throw new RuntimeException(ex);
         }
     }
@@ -57,32 +57,31 @@ public class QuestRepository implements Repository<Quest> {
     @Override
     public Optional<Quest> get(long id) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
-        try (session) {
+        session.beginTransaction();
+        try {
             Optional<Quest> quest = session.createQuery("select q from Quest q " +
                                                         "inner join fetch q.author " +
-                                                        "inner join fetch q.currentQuestion " +
                                                         "inner join fetch q.firstQuestion " +
+                                                        "inner join fetch q.questions " +
                                                         "where q.id =:id", Quest.class)
                     .setParameter("id", id)
                     .uniqueResultOptional();
-            log.info("get quest: {}", quest);
-            transaction.commit();
+            log.info("getQuest quest: {}", quest);
+            session.getTransaction().commit();
             return quest;
-        }  catch (Exception ex) {
-            log.error("get quest: {}", ex.getMessage());
-            transaction.rollback();
-            throw  new RuntimeException(ex);
+        } catch (Exception ex) {
+            log.error("getQuest quest: {}", ex.getMessage());
+            session.getTransaction().rollback();
+            throw new RuntimeException(ex);
         }
     }
 
     @Override
     public void create(Quest quest) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
-        try (session) {
+        session.beginTransaction();
+        try {
             quest.setFirstQuestion(null);
-            quest.setCurrentQuestion(null);
             session.persist(quest);
             session.flush();
 
@@ -94,58 +93,61 @@ public class QuestRepository implements Repository<Quest> {
             }
             session.flush();
 
-            for (Question question : questions) {
+
+            for (Question question : quest.getQuestions()) {
                 List<Answer> answers = question.getAnswers();
                 for (Answer answer : answers) {
+                    answer.setId(null);
                     session.persist(answer);
                 }
             }
 
             quest.setFirstQuestion(quest.getQuestions().get(0));
-            quest.restartQuest();
             session.merge(quest);
 
             log.info("create quest: {}", quest);
-            transaction.commit();
-        }  catch (Exception ex) {
+            session.getTransaction().commit();
+        } catch (Exception ex) {
             log.error("create quest: {}", ex.getMessage());
             try {
                 session.remove(quest);
             } catch (Exception e) {
 
             }
-            transaction.rollback();
-            throw  new RuntimeException(ex);
+            session.getTransaction().rollback();
+            throw new RuntimeException(ex);
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void delete(Quest quest) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             session.remove(quest);
             log.info("delete quest: {}", quest);
-            transaction.commit();
-        }   catch (Exception ex) {
+            session.getTransaction().commit();
+        } catch (Exception ex) {
             log.error("delete quest: {}", ex.getMessage());
-            transaction.rollback();
-            throw  new RuntimeException(ex);
+            session.getTransaction().rollback();
+            throw new RuntimeException(ex);
         }
     }
 
     @Override
     public void update(Quest quest) {
         Session session = sessionCreator.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         try (session) {
             session.merge(quest);
             log.info("update quest: {}", quest);
-            transaction.commit();
-        }   catch (Exception ex) {
+            session.getTransaction().commit();
+        } catch (Exception ex) {
             log.error("update quest: {}", ex.getMessage());
-            transaction.rollback();
-            throw  new RuntimeException(ex);
+            session.getTransaction().rollback();
+            throw new RuntimeException(ex);
         }
     }
 }

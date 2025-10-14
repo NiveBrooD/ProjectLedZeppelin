@@ -16,7 +16,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="first_question_id" type="bigint"/>
-            <column name="current_question_id" type="bigint"/>
             <column name="author_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

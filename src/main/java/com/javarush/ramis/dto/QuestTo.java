@@ -13,6 +13,5 @@ public class QuestTo {
     private String description;
     private List<QuestionTo> questions;
     private QuestionTo firstQuestion;
-    private QuestionTo currentQuestion;
     private UserTo author;
 }

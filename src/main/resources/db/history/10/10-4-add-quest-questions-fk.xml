@@ -13,12 +13,6 @@
                 constraintName="quests_first_question_fk"/>
         <addForeignKeyConstraint
                 baseTableName="quests"
-                baseColumnNames="current_question_id"
-                referencedTableName="questions"
-                referencedColumnNames="id"
-                constraintName="quests_current_question_fk"/>
-        <addForeignKeyConstraint
-                baseTableName="quests"
                 baseColumnNames="author_id"
                 referencedTableName="users"
                 referencedColumnNames="id"

@@ -1,9 +1,6 @@
 package com.javarush.ramis.config;
 
-import com.javarush.ramis.entity.Answer;
-import com.javarush.ramis.entity.Quest;
-import com.javarush.ramis.entity.Question;
-import com.javarush.ramis.entity.User;
+import com.javarush.ramis.entity.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -59,11 +56,39 @@ public class SessionCreator implements AutoCloseable {
             configuration.addAnnotatedClass(User.class);
             log.info("Added annotated class {}", User.class);
 
+            configuration.addAnnotatedClass(UserQuest.class);
+            log.info("Added annotated class {}", UserQuest.class);
+
             sessionFactory = configuration.buildSessionFactory();
             log.info("SessionFactory created successfully");
 
         } catch (Exception e) {
             log.error("Failed to create SessionFactory", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    //for tests (Liquibase)
+    public SessionCreator(Properties properties) {
+        try {
+            Configuration configuration = new Configuration();
+
+            configuration.setProperty("hibernate.connection.url", properties.getProperty("hibernate.connection.url"));
+            configuration.setProperty("hibernate.connection.username", properties.getProperty("hibernate.connection.username"));
+            configuration.setProperty("hibernate.connection.password", properties.getProperty("hibernate.connection.password"));
+            configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
+            configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+            configuration.setProperty("hibernate.show_sql", "true");
+            configuration.setProperty("hibernate.format_sql", "true");
+
+            configuration.addAnnotatedClass(Answer.class);
+            configuration.addAnnotatedClass(Quest.class);
+            configuration.addAnnotatedClass(Question.class);
+            configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(UserQuest.class);
+
+            sessionFactory = configuration.buildSessionFactory();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

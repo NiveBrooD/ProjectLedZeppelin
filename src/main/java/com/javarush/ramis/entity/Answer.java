@@ -2,13 +2,13 @@ package com.javarush.ramis.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "answers")
 public class Answer {
@@ -27,10 +27,4 @@ public class Answer {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "next_question_id",  nullable = false)
     private Question nextQuestion;
-
-    public Answer(String description, Question question, Question nextQuestion) {
-        this.description = description;
-        this.question = question;
-        this.nextQuestion = nextQuestion;
-    }
 }

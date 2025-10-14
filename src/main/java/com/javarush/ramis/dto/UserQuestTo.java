@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class QuestionTo {
+public class UserQuestTo {
     private Long id;
-    private String description;
-    private boolean end;
+    private QuestionTo currentQuestion;
 }

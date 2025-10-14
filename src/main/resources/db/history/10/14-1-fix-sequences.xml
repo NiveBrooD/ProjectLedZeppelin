@@ -1,0 +1,14 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="1760447038242-1" author="Ramis">
+        <sql>
+            SELECT setval('answers_id_seq', COALESCE((SELECT MAX(id)+1 FROM answers), 1), false);
+            SELECT setval('quests_id_seq', COALESCE((SELECT MAX(id)+1 FROM quests), 1), false);
+            SELECT setval('users_id_seq', COALESCE((SELECT MAX(id)+1 FROM users), 1), false);
+            SELECT setval('questions_id_seq', COALESCE((SELECT MAX(id)+1 FROM questions), 1), false);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
