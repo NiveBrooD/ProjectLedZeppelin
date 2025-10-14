@@ -27,10 +27,13 @@ public class RestartServlet extends HttpServlet {
         try {
             QuestTo quest = questService.getQuest(Long.parseLong(questId));
             UserQuestTo userQuest = questService.getUserQuest(quest, user);
+            if (userQuest == null) {
+                throw new QuestException("Quest Not Found");
+            }
             questService.restartQuest(userQuest);
             resp.sendRedirect("/quest?id=" + questId);
         } catch (QuestException e) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

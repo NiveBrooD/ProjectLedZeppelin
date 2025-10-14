@@ -1,5 +1,6 @@
 package com.javarush.ramis.servlet;
 
+import com.javarush.ramis.config.SessionCreator;
 import com.javarush.ramis.dto.Role;
 import com.javarush.ramis.dto.UserTo;
 import com.javarush.ramis.repository.UserRepository;
@@ -9,14 +10,24 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
 
 @Setter
+@Getter
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
-    private UserService userService = new UserService(new UserRepository());
+    private final UserService userService;
+
+    public SignupServlet() {
+        this.userService = new UserService(new UserRepository(SessionCreator.getInstance()));
+    }
+
+    public SignupServlet(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

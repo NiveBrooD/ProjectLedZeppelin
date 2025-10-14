@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/")
 public class IndexServlet extends HttpServlet {
-    private final QuestService questService = new QuestService(new QuestRepository(), new UserQuestRepository());
+    private QuestService questService = new QuestService(new QuestRepository(), new UserQuestRepository());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

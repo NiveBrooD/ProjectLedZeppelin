@@ -1,5 +1,6 @@
 package com.javarush.ramis.servlet;
 
+import com.javarush.ramis.config.SessionCreator;
 import com.javarush.ramis.dto.UserTo;
 import com.javarush.ramis.exception.UserNotFoundException;
 import com.javarush.ramis.repository.UserRepository;
@@ -16,7 +17,7 @@ import java.io.IOException;
 @Setter
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private UserService userService = new UserService(new UserRepository());
+    private UserService userService = new UserService(new UserRepository(SessionCreator.getInstance()));
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

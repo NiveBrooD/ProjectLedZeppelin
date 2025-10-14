@@ -2,6 +2,7 @@ package com.javarush.ramis.repository;
 
 import com.javarush.ramis.config.SessionCreator;
 import com.javarush.ramis.entity.Question;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@AllArgsConstructor
 public class QuestionRepository implements Repository<Question> {
     private final SessionCreator sessionCreator;
 

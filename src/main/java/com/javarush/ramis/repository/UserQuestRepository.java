@@ -1,13 +1,17 @@
 package com.javarush.ramis.repository;
 
 import com.javarush.ramis.config.SessionCreator;
+import com.javarush.ramis.entity.Quest;
+import com.javarush.ramis.entity.User;
 import com.javarush.ramis.entity.UserQuest;
+import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class UserQuestRepository implements Repository<UserQuest> {
     private final SessionCreator sessionCreator;
 
@@ -19,11 +23,13 @@ public class UserQuestRepository implements Repository<UserQuest> {
         Session session = sessionCreator.getSession();
         session.beginTransaction();
         try {
+            Quest quest = session.get(Quest.class, questId);
+            User user = session.get(User.class, userId);
             Optional<UserQuest> userQuestOptional = session.createQuery("select uq from UserQuest uq " +
                                                                         "inner join fetch uq.currentQuestion " +
-                                                                        "where uq.quest.id=:questId AND uq.user.id=:userId", UserQuest.class)
-                    .setParameter("questId", questId)
-                    .setParameter("userId", userId)
+                                                                        "where uq.quest=:quest AND uq.user=:user", UserQuest.class)
+                    .setParameter("quest", quest)
+                    .setParameter("user", user)
                     .uniqueResultOptional();
             session.getTransaction().commit();
             return userQuestOptional;

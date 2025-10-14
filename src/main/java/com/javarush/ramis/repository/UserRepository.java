@@ -19,7 +19,7 @@ import java.util.Optional;
 public class UserRepository implements Repository<User> {
     private final SessionCreator sessionCreator;
 
-    public UserRepository() {
+    protected UserRepository() {
         sessionCreator = SessionCreator.getInstance();
     }
 

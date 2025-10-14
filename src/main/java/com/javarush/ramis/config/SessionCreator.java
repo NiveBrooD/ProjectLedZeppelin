@@ -26,6 +26,11 @@ public class SessionCreator implements AutoCloseable {
         return instance;
     }
 
+    public static SessionCreator sessionCreatorForTests(Properties properties) {
+       return new SessionCreator(properties);
+    }
+
+    //for real db
     private SessionCreator() {
         try {
             Configuration configuration = new Configuration();
@@ -39,7 +44,7 @@ public class SessionCreator implements AutoCloseable {
             configuration.setProperty("hibernate.connection.username", dbUser);
             configuration.setProperty("hibernate.connection.password", dbPassword);
             configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
-            configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+            configuration.setProperty("hibernate.hbm2ddl.auto", "validate");
             configuration.setProperty("hibernate.show_sql", "true");
             configuration.setProperty("hibernate.format_sql", "true");
 
@@ -69,7 +74,7 @@ public class SessionCreator implements AutoCloseable {
     }
 
     //for tests (Liquibase)
-    public SessionCreator(Properties properties) {
+    private SessionCreator(Properties properties) {
         try {
             Configuration configuration = new Configuration();
 
@@ -77,7 +82,7 @@ public class SessionCreator implements AutoCloseable {
             configuration.setProperty("hibernate.connection.username", properties.getProperty("hibernate.connection.username"));
             configuration.setProperty("hibernate.connection.password", properties.getProperty("hibernate.connection.password"));
             configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
-            configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+            configuration.setProperty("hibernate.hbm2ddl.auto", "validate");
             configuration.setProperty("hibernate.show_sql", "true");
             configuration.setProperty("hibernate.format_sql", "true");
 
